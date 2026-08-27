@@ -82,7 +82,7 @@ sudo reboot
 
 To achieve **500+ tokens/sec Prompt Processing** and 2x faster token generation with `llama.cpp` on CMP 50HX:
 
-Use the `DISABLE_DP4A` (DP2A emulation) patch (PR #24616) when compiling `llama.cpp`:
+Use the `DISABLE_DP4A` (DP2A emulation) patch by **[arabel1a](https://github.com/arabel1a)** ([llama.cpp #24616](https://github.com/ggml-org/llama.cpp/pull/24616)) when compiling `llama.cpp`:
 
 ```bash
 cmake -B build -DGGML_CUDA=ON -DCMAKE_CUDA_FLAGS="-DDISABLE_DP4A --fmad=false"
@@ -104,8 +104,13 @@ sudo reboot
 
 ---
 
-## Attribution
+## Attribution & Acknowledgments
 
-Source project and original author:
-- Original Author: [xrip](https://github.com/xrip)
-- Upstream Source: [github.com/xrip/cmp50hx-unlock](https://github.com/xrip/cmp50hx-unlock)
+### CMP50 Unlock Kernel Driver Research & Patches
+- Author: **[xrip](https://github.com/xrip)**
+- Original Repository: **[github.com/xrip/cmp50hx-unlock](https://github.com/xrip/cmp50hx-unlock)**
+
+### LLM DP2A / DISABLE_DP4A Emulation Research
+- Author: **[arabel1a](https://github.com/arabel1a)**
+- Research & Microbenchmarks: **[arabel1a/ml-on-cmp](https://github.com/arabel1a/ml-on-cmp)**
+- llama.cpp Issue & PR: **[llama.cpp#24616](https://github.com/ggml-org/llama.cpp/pull/24616)**

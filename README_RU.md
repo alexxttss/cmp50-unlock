@@ -80,7 +80,7 @@ sudo reboot
 
 Для достижения скорости **500+ токенов/сек на Prompt Processing** и 2-кратного ускорения генерации токенов в `llama.cpp` на CMP 50HX:
 
-Используйте патч эмуляции `DISABLE_DP4A` (PR #24616) при сборке `llama.cpp`:
+Используйте патч эмуляции `DISABLE_DP4A` разработчика **[arabel1a](https://github.com/arabel1a)** ([llama.cpp #24616](https://github.com/ggml-org/llama.cpp/pull/24616)) при сборке `llama.cpp`:
 
 ```bash
 cmake -B build -DGGML_CUDA=ON -DCMAKE_CUDA_FLAGS="-DDISABLE_DP4A --fmad=false"
@@ -102,8 +102,13 @@ sudo reboot
 
 ---
 
-## Авторство
+## Авторство и Благодарности
 
-Исходный проект и автор оригинальных исследований:
-- Автор: [xrip](https://github.com/xrip)
-- Оригинальный репозиторий: [github.com/xrip/cmp50hx-unlock](https://github.com/xrip/cmp50hx-unlock)
+### Исследование и патчи драйвера ядра CMP50 Unlock
+- Автор: **[xrip](https://github.com/xrip)**
+- Исходный репозиторий: **[github.com/xrip/cmp50hx-unlock](https://github.com/xrip/cmp50hx-unlock)**
+
+### Исследование эмуляции DP2A / DISABLE_DP4A для карт CMP в llama.cpp
+- Автор: **[arabel1a](https://github.com/arabel1a)**
+- Микробенчмарки и исследование: **[arabel1a/ml-on-cmp](https://github.com/arabel1a/ml-on-cmp)**
+- PR и обсуждение в llama.cpp: **[llama.cpp#24616](https://github.com/ggml-org/llama.cpp/pull/24616)**
