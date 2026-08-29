@@ -114,3 +114,20 @@ sudo reboot
 - Author: **[arabel1a](https://github.com/arabel1a)**
 - Research & Microbenchmarks: **[arabel1a/ml-on-cmp](https://github.com/arabel1a/ml-on-cmp)**
 - llama.cpp Issue & PR: **[llama.cpp#24616](https://github.com/ggml-org/llama.cpp/pull/24616)**
+
+## ⚡ Dynamic Idle Power Management Daemon
+
+CMP 50HX GPUs draw ~85W per card in idle state P0 because driver-level power limits cannot be reduced below 100W via \`nvidia-smi -pl\`.
+
+We provide an ultra-lightweight dynamic power daemon (\`tools/power-daemon/cmp-power-daemon.py\`) that monitors GPU utilization using NVML C bindings:
+- **Idle (utilization = 0% for >1s):** Automatically locks GPU clocks to 300 MHz (\`nvmlDeviceSetGpuLockedClocks\`), reducing idle power to **~50-60W per card** (saving ~55W total idle power across dual cards).
+- **Active (utilization > 0%):** Instantly unlocks clocks back to dynamic Boost (1800+ MHz) in sub-millisecond time with zero latency or performance degradation during LLM inference.
+
+### Installation
+```bash
+sudo cp tools/power-daemon/cmp-power-daemon.py /usr/local/bin/
+sudo chmod +x /usr/local/bin/cmp-power-daemon.py
+sudo cp tools/power-daemon/cmp-power-daemon.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now cmp-power-daemon.service
+```

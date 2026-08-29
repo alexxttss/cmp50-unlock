@@ -112,3 +112,20 @@ sudo reboot
 - Автор: **[arabel1a](https://github.com/arabel1a)**
 - Микробенчмарки и исследование: **[arabel1a/ml-on-cmp](https://github.com/arabel1a/ml-on-cmp)**
 - PR и обсуждение в llama.cpp: **[llama.cpp#24616](https://github.com/ggml-org/llama.cpp/pull/24616)**
+
+## ⚡ Демон динамического энергосбережения в простое
+
+Видеокарты CMP 50HX потребляют ~85 Вт на карту в состоянии P0 в режиме простоя, так как лимит мощности в драйвере не позволяет опустить значение ниже 100 Вт через \`nvidia-smi -pl\`.
+
+В репозиторий добавлен легковесный демон (\`tools/power-daemon/cmp-power-daemon.py\`), использующий прямые C-вызовы NVML:
+- **В простое (нагрузка 0% более 1 сек):** Автоматически фиксирует частоты ядра на 300 МГц (\`nvmlDeviceSetGpuLockedClocks\`), снижая потребление до **~50–60 Вт на карту** (экономия более 50 Вт на системе из двух карт 24/7).
+- **При нагрузке (утилизация > 0%):** Мгновенно (<1 мс) сбрасывает ограничение и возвращает карту в динамический Boost (1800+ МГц) без задержек и потери производительности инференса.
+
+### Установка
+```bash
+sudo cp tools/power-daemon/cmp-power-daemon.py /usr/local/bin/
+sudo chmod +x /usr/local/bin/cmp-power-daemon.py
+sudo cp tools/power-daemon/cmp-power-daemon.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now cmp-power-daemon.service
+```

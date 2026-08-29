@@ -1,0 +1,14 @@
+[Unit]
+Description=CMP 50HX Dynamic Idle Power Management Daemon
+After=network.target nvidia-persistenced.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/local/bin/cmp-power-daemon.py
+Restart=always
+RestartSec=2
+KillMode=process
+TimeoutStopSec=5
+
+[Install]
+WantedBy=multi-user.target
