@@ -129,3 +129,11 @@ sudo cp tools/power-daemon/cmp-power-daemon.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now cmp-power-daemon.service
 ```
+
+## 🚀 Автоматическая разблокировка PCIe Gen 3 / Gen 2
+
+Видеокарты CMP 50HX на заводе ограничены в дескрипторе VBIOS скоростью PCIe Gen 1 (2.5 GT/s).
+
+В драйвер добавлен блок автоматической перекалибровки шины (\`patches/04-cmp50-pcie-gen3.patch\`):
+- **На материнских платах с поддержкой PCIe 3.0 (X99, Ivy Bridge-E v2, современные платформы Intel/AMD):** Автоматически согласовывает скорость **PCIe 3.0 (8.0 GT/s)** с удвоением пропускной способности до **~15.8 ГБ/с** на x16.
+- **На платах с контроллером PCIe 2.0 (X79 Sandy Bridge v1):** Автоматически переключается в **PCIe Gen 2 (5.0 GT/s)** для обеспечения максимальной стабильности сигнала.

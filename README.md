@@ -131,3 +131,11 @@ sudo cp tools/power-daemon/cmp-power-daemon.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now cmp-power-daemon.service
 ```
+
+## 🚀 PCIe Gen 3 & Gen 2 Auto-Negotiation Unlock
+
+CMP 50HX cards are factory-locked to PCIe Gen 1 (2.5 GT/s) in VBIOS descriptor endpoints.
+
+Our driver includes an automated PCIe link retrain engine (\`patches/04-cmp50-pcie-gen3.patch\`):
+- **On PCIe 3.0 Hosts (X99, Ivy Bridge-E v2, Ryzen, modern Intel/AMD):** Automatically negotiates **PCIe Gen 3 (8.0 GT/s)** doubling bus throughput to **~15.8 GB/s** on x16 links.
+- **On Legacy PCIe 2.0 Hosts (X79 Sandy Bridge-E v1):** Automatically falls back to **PCIe Gen 2 (5.0 GT/s)** for maximum stability without signal dropouts.
